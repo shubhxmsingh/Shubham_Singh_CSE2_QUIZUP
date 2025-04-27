@@ -19,7 +19,7 @@
 
 ## 🎬 Video Explanation
 <div align="center">
-  <a href="https://github.com/username/repository/video_explanation.mp4">
+  <a href="https://drive.google.com/file/d/1BJJ2s4cF6ozPUuF9NyXXsF1PBFWGKSnA/view?usp=drive_link">
     <img src="thumbnail.png" alt="Video Thumbnail" width="600"/>
   </a>
   <p>Click the image above to view the project demonstration</p>
