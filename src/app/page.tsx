@@ -21,7 +21,14 @@ const Users = dynamic(() => import('lucide-react').then(mod => mod.Users), { ssr
 const Sun = dynamic(() => import('lucide-react').then(mod => mod.Sun), { ssr: false });
 const Moon = dynamic(() => import('lucide-react').then(mod => mod.Moon), { ssr: false });
 
-const FloatingElements = dynamic(() => import('@/components/home/FloatingElements').then(mod => mod.FloatingElements), { ssr: false });
+// Lazy load components that aren't needed for initial view
+const FloatingElements = dynamic(
+  () => import('@/components/home/FloatingElements').then(mod => mod.FloatingElements), 
+  { 
+    ssr: false,
+    loading: () => <div className="absolute inset-0" aria-hidden="true" /> 
+  }
+);
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -182,6 +189,7 @@ export default function Home() {
                   objectFit: 'contain'
                 }}
                 priority
+                loading="eager"
               />
             </Link>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-purple-500 to-secondary bg-clip-text text-transparent">

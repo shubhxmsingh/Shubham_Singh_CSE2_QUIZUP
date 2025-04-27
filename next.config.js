@@ -5,6 +5,23 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
+  images: {
+    domains: ['avatars.githubusercontent.com'],
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60,
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  poweredByHeader: false,
+  compress: true,
 }
 
-module.exports = nextConfig 
+// Add bundle analyzer in analyze mode
+const withBundleAnalyzer = process.env.ANALYZE === 'true'
+  ? require('@next/bundle-analyzer')({
+      enabled: true,
+    })
+  : (config) => config;
+
+module.exports = withBundleAnalyzer(nextConfig) 

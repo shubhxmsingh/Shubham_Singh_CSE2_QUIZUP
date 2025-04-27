@@ -8,7 +8,13 @@ import { dark } from '@clerk/themes';
 import { Logo } from '@/components/Logo';
 import { NavigationDebug } from '@/components/NavigationDebug';
 
-const inter = Inter({ subsets: ['latin'] });
+// Optimize font loading
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap', // Use 'swap' for better performance
+  preload: true,
+  fallback: ['system-ui', 'sans-serif']
+});
 
 export const metadata: Metadata = {
   title: 'QUIZUP',
@@ -72,10 +78,20 @@ export default function RootLayout({
       <ThemeProvider>
         <html lang="en" className="h-full">
           <head>
+            {/* Preconnect to domains for faster loading */}
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+            
+            {/* Favicon */}
             <link rel="icon" href="/favicon.ico" sizes="any" />
             <link rel="icon" href="/upscaled_4k.png" type="image/png" />
             <link rel="apple-touch-icon" href="/upscaled_4k.png" />
+            
+            {/* Mobile settings */}
             <meta name="mobile-web-app-capable" content="yes" />
+            
+            {/* Preload critical assets */}
+            <link rel="preload" href="/upscaled_4k.png" as="image" type="image/png" />
           </head>
           <body className={`${inter.className} min-h-screen flex flex-col`}>
             <NavigationDebug />
