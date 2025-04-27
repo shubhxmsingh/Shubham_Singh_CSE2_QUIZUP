@@ -13,7 +13,7 @@
 </div>
 
 ## 📌 Repository Information
-- **Repository Name**: Shubham_Singh_CSE_QUIZUP
+- **Repository Name**: Shubham_Singh_CSE2_QUIZUP
 - **Project Title**: QUIZUP - Interactive Learning Platform
 - **Course**: Web Development Project
 
@@ -95,8 +95,8 @@ The platform features interactive quizzes, real-time feedback, performance analy
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/Shubham_Singh_CSE_QUIZUP.git
-   cd Shubham_Singh_CSE_QUIZUP
+   git clone https://github.com/shubhxmsingh/Shubham_Singh_CSE2_QUIZUP.git
+   cd Shubham_Singh_CSE2_QUIZUP
    ```
 
 2. **Install dependencies**
@@ -138,8 +138,8 @@ The platform features interactive quizzes, real-time feedback, performance analy
   <table>
     <tr>
       <td align="center">
-        <a href="https://github.com/yourusername">
-          <img src="https://via.placeholder.com/100" width="100px;" alt="Shubham Singh"/>
+        <a href="https://github.com/shubhxmsingh">
+          <img src="https://avatars.githubusercontent.com/u/shubhxmsingh" width="100px;" alt="Shubham Singh"/>
           <br />
           <sub><b>Shubham Singh</b></sub>
         </a>
@@ -154,17 +154,18 @@ The platform features interactive quizzes, real-time feedback, performance analy
 ## 📊 Project Highlights
 
 <div align="center">
-  <img src="dashboard_preview.png" alt="Dashboard Preview" width="80%"/>
+  <img src="upscaled_4k.png" alt="Dashboard Preview" width="80%"/>
   <p>Student Dashboard with Analytics</p>
 </div>
 
+<!-- Comments: Using upscaled_4k.png as a placeholder since the other images don't exist yet -->
 <div style="display: flex; justify-content: space-between; margin-top: 20px;">
   <div style="width: 48%;">
-    <img src="student_view.png" alt="Student View" width="100%"/>
+    <img src="upscaled_4k.png" alt="Student View" width="100%"/>
     <p align="center">Student Quiz Interface</p>
   </div>
   <div style="width: 48%;">
-    <img src="teacher_view.png" alt="Teacher View" width="100%"/>
+    <img src="upscaled_4k.png" alt="Teacher View" width="100%"/>
     <p align="center">Teacher Management Panel</p>
   </div>
 </div>
@@ -184,7 +185,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <div align="center">
   <p>Built with ❤️ by Shubham Singh</p>
   
-  <a href="https://github.com/yourusername">
-    <img src="https://img.shields.io/github/followers/yourusername?label=Follow&style=social" alt="GitHub"/>
+  <a href="https://github.com/shubhxmsingh">
+    <img src="https://img.shields.io/github/followers/shubhxmsingh?label=Follow&style=social" alt="GitHub"/>
   </a>
 </div>
