@@ -179,7 +179,7 @@ export default function Home() {
           >
             <Link href="/" className="flex items-center">
               <Image
-                src="/upscaled_4k.png"
+                src="/upscaled_4k.optimized.png"
                 alt="QuizUp Logo"
                 width={50}
                 height={50}
