@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+model User {
+  id            String   @id @default(cuid())
+  clerkId       String   @unique
+  firstName     String?
+  lastName      String?
+  email         String   @unique
+  role          UserRole
+  isActive      Boolean  @default(true)
+  emailVerified Boolean  @default(false)
+  lastLoginAt   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  quizzes       Quiz[]   @relation("CreatedQuizzes")
+  assignments   QuizAssignment[] @relation("StudentAssignments")
+  teacherLinks  TeacherStudent[] @relation("StudentLinks")
+  teacherOf     TeacherStudent[] @relation("TeacherLinks")
+  quizResults   QuizResult[]
+}
+
+model Quiz {
+  id                String   @id @default(cuid())
+  title             String
+  subject           String
+  topic             String?
+  level             String
+  duration          Int
+  numberOfQuestions Int
+  createdBy         User     @relation("CreatedQuizzes", fields: [createdById], references: [id])
+  createdById       String
+  questions         Question[]
+  assignments       QuizAssignment[]
+  results           QuizResult[]
+}
+
+model Question {
+  id            String   @id @default(cuid())
+  quiz          Quiz     @relation(fields: [quizId], references: [id])
+  quizId        String
+  content       String
+  options       String[]
+  correctAnswer String
+  explanation   String?
+}
+
+model QuizAssignment {
+  id        String   @id @default(cuid())
+  quiz      Quiz     @relation(fields: [quizId], references: [id])
+  quizId    String
+  student   User     @relation("StudentAssignments", fields: [studentId], references: [id])
+  studentId String
+  createdAt DateTime @default(now())
+}
+
+model TeacherStudent {
+  id        String   @id @default(cuid())
+  teacher   User     @relation("TeacherLinks", fields: [teacherId], references: [id])
+  teacherId String
+  student   User     @relation("StudentLinks", fields: [studentId], references: [id])
+  studentId String
+}
+
+model QuizResult {
+  id             String   @id @default(cuid())
+  quiz           Quiz     @relation(fields: [quizId], references: [id])
+  quizId         String
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String
+  score          Int
+  totalQuestions Int
+  improvementGuidance String?  @db.Text
+  createdAt      DateTime @default(now())
+}
