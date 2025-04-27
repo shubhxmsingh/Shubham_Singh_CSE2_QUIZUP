@@ -37,6 +37,16 @@
   </p>
 </div>
 
+## 📑 Final Project Report
+<div align="center">
+  <a href="fFinal Project Report.pdf">
+    <img src="https://img.shields.io/badge/Download-Project_Report-blue?style=for-the-badge&logo=adobe-acrobat-reader" alt="Project Report"/>
+  </a>
+  <p style="background-color: #E8F4FF; padding: 10px; border-radius: 5px; font-weight: bold; margin-top: 15px; color: #0366d6; border: 1px solid #c8e1ff;">
+    <strong>📄 The comprehensive project report includes detailed documentation, analysis, and insights about the QUIZUP platform development process 📄</strong>
+  </p>
+</div>
+
 ## 📝 Project Description
 
 <p style="text-align: justify;">
