@@ -1,7 +1,7 @@
 # QUIZUP - Interactive Learning Platform 🚀
 
 <div align="center">
-  <img src="upscaled_4k.png" alt="QUIZUP Platform Banner" width="800"/>
+  <img src="upscaled_4k.png" alt="QUIZUP Platform Banner" width="50"/>
   
   <p>
     <a href="#video-explanation">View Demo</a> •
