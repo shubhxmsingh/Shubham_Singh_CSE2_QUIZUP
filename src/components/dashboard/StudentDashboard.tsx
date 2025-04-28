@@ -32,6 +32,8 @@ import { UserButton, useUser, SignOutButton } from '@clerk/nextjs';
 import dynamic from 'next/dynamic';
 import { useTheme } from '@/components/ThemeProvider';
 import QuizBackgroundAnimation from '@/components/QuizBackgroundAnimation';
+import PracticeQuizzes from '@/components/PracticeQuizzes';
+import { Logo } from '@/components/Logo';
 
 // Dynamically import charts with no SSR to avoid hydration issues
 const TopicPerformanceChart = dynamic(() => import('../charts/TopicPerformanceChart'), {
@@ -156,25 +158,23 @@ export function StudentDashboard() {
   return (
     <div className="container mx-auto p-6 space-y-8 relative min-h-screen">
       <QuizBackgroundAnimation />
-      
-      {/* Header with glass morphism */}
+      {/* Header with logo and welcome */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         className="rounded-xl bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl p-6 dark:bg-black/10 dark:border-white/10"
       >
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-purple-500 to-gray-500 bg-clip-text text-transparent dark:from-primary dark:to-purple-400">
-              Welcome back, {user?.firstName}!
-            </h1>
-            <p className="text-muted-foreground mt-2 dark:text-muted-foreground">Track your progress and continue learning</p>
-          </motion.div>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-6">
+            <Logo />
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-purple-500 to-gray-500 bg-clip-text text-transparent dark:from-primary dark:to-purple-400">
+                Welcome back, {user?.firstName}!
+              </h1>
+              <p className="text-muted-foreground mt-2 dark:text-muted-foreground">Track your progress and continue learning</p>
+            </div>
+          </div>
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -385,64 +385,7 @@ export function StudentDashboard() {
 
         {/* Practice Tab - Enhanced version */}
         <TabsContent value="practice" className="space-y-6">
-          <motion.div 
-            variants={{
-              hidden: { opacity: 0 },
-              show: {
-                opacity: 1,
-                transition: {
-                  staggerChildren: 0.1
-                }
-              }
-            }}
-            initial="hidden"
-            animate="show"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            {subjects.map((subject, index) => {
-              const Icon = subject.icon;
-              return (
-                <motion.div
-                  key={subject.name}
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    show: { opacity: 1, y: 0 }
-                  }}
-                  whileHover={{ 
-                    scale: 1.05,
-                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Card className="overflow-hidden border-0 bg-gradient-to-br from-white/70 to-white/40 backdrop-blur-md dark:from-gray-900/70 dark:to-gray-900/40 dark:border-gray-800/30 shadow-lg">
-                    <div className={`h-2 w-full ${subject.color}`}></div>
-                    <CardContent className="p-6 pt-8">
-                      <div className="flex flex-col items-center text-center space-y-4">
-                        <motion.div 
-                          className={`p-4 rounded-full ${subject.color} bg-opacity-20 dark:bg-opacity-30`}
-                          whileHover={{ rotate: 5, scale: 1.1 }}
-                          transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                        >
-                          <Icon className="w-10 h-10 dark:text-white" />
-                        </motion.div>
-                        <div>
-                          <h3 className="text-xl font-semibold dark:text-white">{subject.name}</h3>
-                          <p className="text-sm text-muted-foreground dark:text-muted-foreground">Practice questions to test your skills</p>
-                        </div>
-                        <Button
-                          variant="default"
-                          className="w-full rounded-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
-                          onClick={() => handlePractice(subject.name)}
-                        >
-                          Practice Now
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </motion.div>
+          <PracticeQuizzes />
         </TabsContent>
 
         {/* Leaderboard Tab - Enhanced with more visuals */}

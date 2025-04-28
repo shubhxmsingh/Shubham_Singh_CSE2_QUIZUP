@@ -15,6 +15,8 @@ import QuizCreationForm from './components/QuizCreationForm';
 import { useAuth, UserButton, SignOutButton } from '@clerk/nextjs';
 import dynamic from 'next/dynamic';
 import { toast } from 'sonner';
+import QuizResultsModal from './components/QuizResultsModal';
+import { Logo } from '@/components/Logo';
 
 // Animation variants
 const staggerContainer = {
@@ -76,6 +78,8 @@ export default function TeacherDashboard() {
   const [deletingQuiz, setDeletingQuiz] = useState(false);
   const { userId } = useAuth();
   const [mounted, setMounted] = useState(false);
+  const [selectedQuiz, setSelectedQuiz] = useState<Quiz | null>(null);
+  const [showResultsModal, setShowResultsModal] = useState(false);
 
   // After component mounts, update state to indicate browser environment
   useEffect(() => {
@@ -157,6 +161,12 @@ export default function TeacherDashboard() {
     }
   };
 
+  // Add this function to handle viewing quiz results
+  const handleViewResults = (quiz: Quiz) => {
+    setSelectedQuiz(quiz);
+    setShowResultsModal(true);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -191,17 +201,16 @@ export default function TeacherDashboard() {
         transition={{ duration: 0.6 }}
         className="container mx-auto rounded-xl bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl p-6 mb-8 dark:bg-black/10 dark:border-white/10"
       >
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-purple-500 to-gray-500 bg-clip-text text-transparent dark:from-primary dark:to-purple-400">
-              Welcome, {user.name ? user.name.split(' ')[0] : 'Teacher'}!
-            </h1>
-            <p className="text-muted-foreground mt-2">Here's an overview of your teaching activities</p>
-          </motion.div>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-6">
+            <Logo />
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-purple-500 to-gray-500 bg-clip-text text-transparent dark:from-primary dark:to-purple-400">
+                Welcome, {user.name ? user.name.split(' ')[0] : 'Teacher'}!
+              </h1>
+              <p className="text-muted-foreground mt-2">Here's an overview of your teaching activities</p>
+            </div>
+          </div>
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -362,7 +371,7 @@ export default function TeacherDashboard() {
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <div>
-                          <CardTitle className="text-lg text-primary dark:text-primary-foreground">{quiz.title}</CardTitle>
+                          <CardTitle className="text-lg text-primary dark:text-white">{quiz.title}</CardTitle>
                           <CardDescription className="text-muted-foreground dark:text-gray-400">{quiz.questions.length} questions</CardDescription>
                         </div>
                         <div className="flex items-center gap-2">
@@ -401,6 +410,25 @@ export default function TeacherDashboard() {
                         />
                       </div>
                     </CardContent>
+                    <CardFooter className="flex justify-between">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleViewResults(quiz)}
+                        className="flex items-center gap-1"
+                      >
+                        <BarChart3 className="h-4 w-4" />
+                        View Results
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className="flex items-center gap-1"
+                      >
+                        <Users className="h-4 w-4" />
+                        Assign
+                      </Button>
+                    </CardFooter>
                   </Card>
                 </motion.div>
               ))}
@@ -569,6 +597,13 @@ export default function TeacherDashboard() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Add the QuizResultsModal */}
+      <QuizResultsModal 
+        quiz={selectedQuiz}
+        isOpen={showResultsModal}
+        onClose={() => setShowResultsModal(false)}
+      />
     </div>
   );
 } 

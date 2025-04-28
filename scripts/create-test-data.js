@@ -76,53 +76,6 @@ async function main() {
       console.log(`Linked teacher to student: ${student.firstName} ${student.lastName}`);
     }
 
-    // Create a sample quiz
-    const quiz = await prisma.quiz.create({
-      data: {
-        title: 'Sample Math Quiz',
-        subject: 'Mathematics',
-        level: 'Intermediate',
-        duration: 30, // minutes
-        numberOfQuestions: 5,
-        createdById: teacher.id,
-        questions: {
-          create: [
-            {
-              content: 'What is 2 + 2?',
-              options: ['3', '4', '5', '6'],
-              correctAnswer: '4',
-              explanation: 'Basic addition'
-            },
-            {
-              content: 'What is 5 × 5?',
-              options: ['20', '25', '30', '35'],
-              correctAnswer: '25',
-              explanation: 'Multiplication'
-            },
-            {
-              content: 'What is 10 ÷ 2?',
-              options: ['3', '4', '5', '6'],
-              correctAnswer: '5',
-              explanation: 'Division'
-            },
-            {
-              content: 'What is the square root of 16?',
-              options: ['2', '3', '4', '5'],
-              correctAnswer: '4',
-              explanation: 'Square root'
-            },
-            {
-              content: 'What is 3²?',
-              options: ['6', '9', '12', '15'],
-              correctAnswer: '9',
-              explanation: 'Exponent'
-            }
-          ]
-        }
-      }
-    });
-    console.log('Created quiz:', quiz);
-
     // Assign quiz to students
     for (const student of students) {
       await prisma.quizAssignment.create({

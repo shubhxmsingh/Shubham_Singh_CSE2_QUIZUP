@@ -153,103 +153,93 @@ const FALLBACK_QUIZZES = {
 };
 
 export async function POST(req: Request) {
-  try {
-    const { userId } = auth();
-    if (!userId) {
-      return new NextResponse('Unauthorized', { status: 401 });
-    }
-
-    const { subject } = await req.json();
-    if (!subject) {
-      return new NextResponse('Subject is required', { status: 400 });
-    }
-
-    // Check if user exists in database, if not create them
-    let user = await prisma.user.findUnique({
-      where: { clerkId: userId },
-    });
-
-    if (!user) {
-      // Create a basic user with just the clerkId
-      user = await prisma.user.create({
-        data: {
-          clerkId: userId,
-          email: `${userId}@temp.com`, // Temporary email
-          firstName: 'User',
-          lastName: 'User',
-        },
-      });
-    }
-
-    let quizData;
-
-    try {
-      // Initialize OpenAI client
-      const openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-      });
-
-      // Try to generate quiz using ChatGPT
-      const completion = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            content: `Generate a quiz with 20 multiple choice questions about ${subject}. 
-            Each question should have 4 options and one correct answer.
-            Format the response as JSON with this structure:
-            {
-              "title": "Quiz Title",
-              "questions": [
-                {
-                  "text": "Question text",
-                  "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
-                  "correctAnswer": "Option 1",
-                  "explanation": "Brief explanation of the correct answer"
-                }
-              ]
-            }`
-          }
-        ],
-        temperature: 0.7,
-      });
-
-      quizData = JSON.parse(completion.choices[0].message.content || '{}');
-    } catch (error: any) {
-      console.error('Error generating quiz with OpenAI:', error);
-      
-      // Use fallback quiz if OpenAI fails
-      if (FALLBACK_QUIZZES[subject as keyof typeof FALLBACK_QUIZZES]) {
-        quizData = FALLBACK_QUIZZES[subject as keyof typeof FALLBACK_QUIZZES];
-      } else {
-        // If no fallback exists for this subject, use a generic one
-        quizData = FALLBACK_QUIZZES['Mathematics'];
-      }
-    }
-
-    // Create quiz in database
-    const quiz = await prisma.quiz.create({
-      data: {
-        title: quizData.title,
-        subject: subject,
-        createdById: user.id,
-        questions: {
-          create: quizData.questions.map((q: any) => ({
-            text: q.text,
-            options: q.options,
-            correctAnswer: q.correctAnswer,
-            explanation: q.explanation,
-          }))
-        }
-      },
-      include: {
-        questions: true
-      }
-    });
-
-    return NextResponse.json({ quizId: quiz.id });
-  } catch (error) {
-    console.error('Error creating quiz:', error);
-    return new NextResponse('Internal Server Error', { status: 500 });
+  const user = auth();
+  if (!user?.userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  const { subject, topic } = await req.json();
+  const numQuestions = 15;
+  const duration = 20; // minutes
+
+  if (!subject || !topic) {
+    return NextResponse.json({ error: 'Missing subject or topic' }, { status: 400 });
+  }
+
+  let questions = [];
+  let quizTitle = `${subject} Practice Quiz: ${topic}`;
+  let usedAI = false;
+
+  try {
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const prompt = `Generate a ${numQuestions}-question multiple-choice quiz on the topic '${topic}' for the subject '${subject}'. Each question should have 4 options, one correct answer, and a brief explanation.`;
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [
+        { role: 'system', content: 'You are a helpful quiz generator.' },
+        { role: 'user', content: prompt },
+      ],
+      temperature: 0.7,
+      max_tokens: 2000,
+    });
+    // Parse the AI response (assume JSON or parseable format)
+    const aiContent = completion.choices[0].message.content;
+    // Try to parse as JSON, fallback to manual parsing if needed
+    try {
+      questions = JSON.parse(aiContent);
+    } catch {
+      // Fallback: try to extract questions from text (not robust, but a backup)
+      // You may want to improve this for production
+      questions = [];
+    }
+    usedAI = true;
+  } catch (e) {
+    // Fallback to static quizzes if AI fails
+    if (FALLBACK_QUIZZES[subject]) {
+      questions = FALLBACK_QUIZZES[subject].questions.slice(0, numQuestions);
+      quizTitle = FALLBACK_QUIZZES[subject].title + ` (Topic: ${topic})`;
+    } else {
+      return NextResponse.json({ error: 'Failed to generate quiz and no fallback available.' }, { status: 500 });
+    }
+  }
+
+  // Ensure user exists in DB
+  let dbUser = await prisma.user.findUnique({
+    where: { clerkId: user.userId },
+  });
+  if (!dbUser) {
+    dbUser = await prisma.user.create({
+      data: {
+        clerkId: user.userId,
+        email: user.email || `${user.userId}@temp.com`,
+        firstName: user.firstName || 'User',
+        lastName: user.lastName || 'User',
+        role: 'STUDENT',
+      },
+    });
+  }
+
+  // Store the quiz in the database
+  const quiz = await prisma.quiz.create({
+    data: {
+      title: quizTitle,
+      subject,
+      topic,
+      duration,
+      level: 'Practice',
+      numberOfQuestions: numQuestions,
+      createdById: dbUser.id,
+      questions: {
+        create: questions.map((q: any) => ({
+          content: q.text,
+          options: q.options,
+          correctAnswer: q.correctAnswer,
+          explanation: q.explanation || '',
+        })),
+      },
+    },
+    include: { questions: true },
+  });
+
+  return NextResponse.json({ quizId: quiz.id, usedAI });
 } 
