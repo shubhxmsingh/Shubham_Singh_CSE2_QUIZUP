@@ -4,7 +4,7 @@ import { db } from '@/lib/db';
 
 export async function GET() {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     console.log("Auth userId (Clerk ID):", userId);
     
     if (!userId) {

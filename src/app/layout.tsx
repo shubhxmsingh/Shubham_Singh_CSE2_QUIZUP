@@ -39,7 +39,6 @@ export const metadata: Metadata = {
     shortcut: '/upscaled_4k.png',
   },
   manifest: '/manifest.json',
-  themeColor: '#4f46e5',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -48,6 +47,10 @@ export const metadata: Metadata = {
   other: {
     'mobile-web-app-capable': 'yes',
   },
+};
+
+export const viewport = {
+  themeColor: '#4f46e5',
 };
 
 export default function RootLayout({

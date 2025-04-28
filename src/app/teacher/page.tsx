@@ -54,8 +54,8 @@ async function syncUser(userId: string) {
 
 export default async function TeacherDashboard() {
   try {
-    const { userId } = auth();
-    const headersList = headers();
+    const { userId } = await auth();
+    const headersList = await headers();
     const shouldSync = headersList.get('x-sync-user') === 'true';
 
     if (!userId) {
