@@ -173,14 +173,10 @@ The platform features interactive quizzes, real-time feedback, performance analy
 
 <div align="center" style="margin: 30px 0;">
   <div style="background-color: #f8f9fa; padding: 25px; border-radius: 15px; display: inline-block; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
-    <img src="https://avatars.githubusercontent.com/u/shubhxmsingh" width="130px" style="border-radius: 50%; border: 4px solid #0d6efd; box-shadow: 0 8px 16px rgba(13, 110, 253, 0.2);"/>
     <h3 style="margin: 15px 0 5px 0; color: #333; font-size: 1.4em;">Shubham Singh</h3>
-    <p style="margin: 0; color: #6c757d; font-size: 1.1em;">Lead Developer</p>
-    <a href="https://github.com/shubhxmsingh" style="display: inline-block; margin-top: 15px;">
-      <img src="https://img.shields.io/badge/GitHub-Follow-1f425f?style=for-the-badge&logo=github" alt="GitHub"/>
-      <h3 style="margin: 15px 0 5px 0; color: #333; font-size: 1.4em;">Rachit Garg</h3>
-      <h3 style="margin: 15px 0 5px 0; color: #333; font-size: 1.4em;">Nikhil Singh</h3>
-      <h3 style="margin: 15px 0 5px 0; color: #333; font-size: 1.4em;">Harsh Tewatia</h3>
+    <h3 style="margin: 15px 0 5px 0; color: #333; font-size: 1.4em;">Rachit Garg</h3>
+    <h3 style="margin: 15px 0 5px 0; color: #333; font-size: 1.4em;">Nikhil Singh</h3>
+    <h3 style="margin: 15px 0 5px 0; color: #333; font-size: 1.4em;">Harsh Tewatia</h3>
     </a>
   </div>
 </div>
