@@ -178,6 +178,9 @@ The platform features interactive quizzes, real-time feedback, performance analy
     <p style="margin: 0; color: #6c757d; font-size: 1.1em;">Lead Developer</p>
     <a href="https://github.com/shubhxmsingh" style="display: inline-block; margin-top: 15px;">
       <img src="https://img.shields.io/badge/GitHub-Follow-1f425f?style=for-the-badge&logo=github" alt="GitHub"/>
+       <h3 style="margin: 15px 0 5px 0; color: #333; font-size: 1.4em;">Rachit Garg</h3>
+      <h3 style="margin: 15px 0 5px 0; color: #333; font-size: 1.4em;">Nikhil Singh</h3>
+      <h3 style="margin: 15px 0 5px 0; color: #333; font-size: 1.4em;">Harsh Tewatia/h3>
     </a>
   </div>
 </div>
