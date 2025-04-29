@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Button } from './ui/button';
-import { useToast } from './ui/use-toast';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { ExclamationTriangleIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { UserButtonWrapper } from './UserButtonWrapper';
@@ -11,7 +10,6 @@ export function FixAccount() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [step, setStep] = useState<'initial' | 'fixing' | 'success' | 'error'>('initial');
-  const { toast } = useToast();
 
   const handleSignOut = () => {
     window.location.href = '/sign-out';
@@ -35,10 +33,7 @@ export function FixAccount() {
       }
 
       setStep('success');
-      toast({
-        title: 'Success!',
-        description: 'Your account has been reset. Please sign out and sign in again.',
-      });
+      window.alert('Your account has been reset. Please sign out and sign in again.');
 
       // Wait a moment before redirecting to sign-out
       setTimeout(handleSignOut, 3000);
@@ -47,11 +42,7 @@ export function FixAccount() {
       setStep('error');
       const errorMessage = error instanceof Error ? error.message : 'Something went wrong';
       setError(errorMessage);
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive',
-      });
+      window.alert(errorMessage);
     } finally {
       setIsLoading(false);
     }

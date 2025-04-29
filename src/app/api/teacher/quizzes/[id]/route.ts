@@ -4,10 +4,11 @@ import { db } from '@/lib/db';
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  context: any
 ) {
   try {
-    const { userId } = auth();
+    const { params } = context;
+    const { userId } = await auth();
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -40,7 +41,8 @@ export async function GET(
             student: {
               select: {
                 id: true,
-                name: true,
+                firstName: true,
+                lastName: true,
                 email: true,
               }
             }
@@ -56,8 +58,11 @@ export async function GET(
     // Format the data to match the expected interface
     const formattedQuiz = {
       ...quiz,
-      // Extract student info from assignments
-      assignedTo: quiz.assignments.map(assignment => assignment.student),
+      // Extract student info from assignments and add name field
+      assignedTo: quiz.assignments.map(assignment => ({
+        ...assignment.student,
+        name: `${assignment.student.firstName || ''} ${assignment.student.lastName || ''}`.trim()
+      })),
       // Since results aren't in the schema yet, provide an empty array
       results: []
     };
@@ -71,10 +76,11 @@ export async function GET(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  context: any
 ) {
   try {
-    const { userId } = auth();
+    const { params } = context;
+    const { userId } = await auth();
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

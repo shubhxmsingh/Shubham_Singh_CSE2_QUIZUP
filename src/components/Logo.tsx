@@ -12,7 +12,7 @@ export function Logo() {
         height={64}
         className="mb-2"
       />
-      <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+      <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-800 bg-clip-text text-transparent">
         QUIZUP
       </h1>
     </a>

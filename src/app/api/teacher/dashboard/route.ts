@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     
     // Log the authentication state for debugging
     console.log('Dashboard API - Auth state:', { userId });

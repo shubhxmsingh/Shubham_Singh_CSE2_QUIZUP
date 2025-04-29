@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
 import { useRouter } from 'next/navigation';
-import { useToast } from './ui/use-toast';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 
@@ -11,7 +10,6 @@ export function TeacherConversion() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { toast } = useToast();
 
   const syncUser = async () => {
     try {
@@ -61,10 +59,7 @@ export function TeacherConversion() {
         throw new Error(data.error || 'Failed to convert account');
       }
 
-      toast({
-        title: 'Success!',
-        description: 'Your account has been converted to a teacher account. You will be signed out now.',
-      });
+      window.alert('Your account has been converted to a teacher account. You will be signed out now.');
 
       // Wait a moment for the user to see the success message
       setTimeout(() => {
@@ -73,11 +68,7 @@ export function TeacherConversion() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Something went wrong';
       setError(errorMessage);
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive',
-      });
+      window.alert(errorMessage);
     } finally {
       setIsLoading(false);
     }

@@ -3,11 +3,17 @@ import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
 export default async function StudentDashboardPage() {
-  const { userId } = await auth();
-  
-  if (!userId) {
+  try {
+    const authData = await auth();
+    const userId = authData.userId;
+    
+    if (!userId) {
+      redirect('/sign-in');
+    }
+
+    return <StudentDashboard />;
+  } catch (error) {
+    console.error("Authentication error:", error);
     redirect('/sign-in');
   }
-
-  return <StudentDashboard />;
 } 

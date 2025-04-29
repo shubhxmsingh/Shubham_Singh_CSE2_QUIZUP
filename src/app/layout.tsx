@@ -74,9 +74,9 @@ export default function RootLayout({
           colorPrimary: "#4f46e5"
         }
       }}
-      afterSignOutUrl="/"
+      afterSignInUrl="/dashboard"
       signInUrl="/sign-in"
-      homeUrl="/"
+      signUpUrl="/sign-up"
     >
       <ThemeProvider>
         <html lang="en" className="h-full">

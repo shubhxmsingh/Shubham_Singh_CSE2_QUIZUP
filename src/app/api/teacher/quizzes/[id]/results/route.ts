@@ -7,7 +7,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -66,7 +66,10 @@ export async function GET(
     }
 
     // Format the data to match the expected interface
-    const students = quiz.assignments.map(assignment => assignment.student);
+    const students = quiz.assignments.map(assignment => ({
+      ...assignment.student,
+      name: `${assignment.student.firstName || ''} ${assignment.student.lastName || ''}`.trim()
+    }));
     
     const results = quiz.results.map(result => ({
       id: result.id,
